@@ -18,7 +18,6 @@ void List::insert(int value){
         prev = current;
         current = current->getNextPtr();
     }
-
     Node *newNode = new Node(value, NULL, prev);
     prev->setNextPtr(newNode);
     tailPtr->setPrevPtr(newNode);
@@ -32,7 +31,7 @@ void List::insertAtIndex(int data, int index){
     int i = 0;
 
     while (current != NULL){
-        if (i = index)
+        if (i == index)
             break;
         prev = current;
         current = current->getNextPtr();
@@ -52,7 +51,7 @@ void List::deleteAtIndex(int index){
     int i = 0;
 
     while (current != NULL){
-        if (i = index)
+        if (i == index)
             break;
         prev = current;
         current = current->getNextPtr();
@@ -70,9 +69,10 @@ void List::readItem(int index){
     int i = 0;
 
     while (current != NULL){
-        if (i == index)
+        if (i == index){
             cout << current->getData() << endl;
             return;
+        }
         current = current->getNextPtr();
         i++;
     }
@@ -81,16 +81,18 @@ void List::readItem(int index){
 
 void List::reverseList(){
 
-    Node *frontPtr = headPtr->getNextPtr();
-    Node *backPtr = tailPtr->getPrevPtr();
+    Node *tempPrev;
+    Node *front = tailPtr;
+    Node *temp = tailPtr;
 
-    while(frontPtr != NULL){
-        if (frontPtr == backPtr)
-            break;
-        Node *temp1 = backPtr;
-        backPtr->setNextPtr(frontPtr->getNextPtr());
-        frontPtr->setNextPtr(temp1->getPrevPtr());
+    while(temp != NULL) {
+        tempPrev = temp->getPrevPtr();
+        temp->setPrevPtr(temp->getNextPtr());
+        temp->setNextPtr(tempPrev);
+        temp = tempPrev;
     }
+    headPtr = front;
+    tailPtr = tempPrev;
 }
 
 void List::printForward(){
@@ -107,7 +109,7 @@ void List::printBackward(){
 
     Node *current = tailPtr->getPrevPtr();
 
-    while(current!= NULL && current->getPrevPtr() != NULL){
+    while(current != NULL && current->getPrevPtr() != NULL){
         cout << current->getData() << endl;
         current = current->getPrevPtr();
     }
